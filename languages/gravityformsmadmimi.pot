@@ -1,13 +1,13 @@
-# Copyright 2009-2015 Rocketgenius, Inc.
+# Copyright 2009-2016 Rocketgenius, Inc.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms Mad Mimi Add-On 1.0\n"
+"Project-Id-Version: Gravity Forms Mad Mimi Add-On 1.1\n"
 "Report-Msgid-Bugs-To: http://www.gravtiyhelp.com\n"
-"POT-Creation-Date: 2015-05-14 17:51:27+00:00\n"
+"POT-Creation-Date: 2016-08-31 19:59:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Rocketgenius <customerservice@rocketgenius.com>\n"
 "Language-Team: Rocketgenius <customerservice@rocketgenius.com>\n"
 "X-Generator: Gravity Forms Build Server\n"
@@ -24,19 +24,23 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: class-gf-madmimi.php:47 class-gf-madmimi.php:157
+#: class-gf-madmimi.php:56
+msgid "Subscribe contact to Mad Mimi only when payment is received."
+msgstr ""
+
+#: class-gf-madmimi.php:77 class-gf-madmimi.php:202
 msgid "Email Address"
 msgstr ""
 
-#: class-gf-madmimi.php:54
+#: class-gf-madmimi.php:84
 msgid "API Key"
 msgstr ""
 
-#: class-gf-madmimi.php:62
+#: class-gf-madmimi.php:92
 msgid "Mad Mimi settings have been updated."
 msgstr ""
 
-#: class-gf-madmimi.php:76
+#: class-gf-madmimi.php:111
 msgid ""
 "Mad Mimi makes it easy to send email newsletters to your customers, manage "
 "your subscriber lists, and track campaign performance. Use Gravity Forms to "
@@ -45,41 +49,41 @@ msgid ""
 "for one here.%2$s"
 msgstr ""
 
-#: class-gf-madmimi.php:85
+#: class-gf-madmimi.php:120
 msgid ""
 "Gravity Forms Mad Mimi Add-On requires your account email address and API "
 "key, which can be found in the API tab on %1$sthe account page.%2$s"
 msgstr ""
 
-#: class-gf-madmimi.php:106 class-gf-madmimi.php:110 class-gf-madmimi.php:221
+#: class-gf-madmimi.php:146 class-gf-madmimi.php:150 class-gf-madmimi.php:270
 msgid "Name"
 msgstr ""
 
-#: class-gf-madmimi.php:110
+#: class-gf-madmimi.php:150
 msgid "Enter a feed name to uniquely identify this setup."
 msgstr ""
 
-#: class-gf-madmimi.php:114 class-gf-madmimi.php:118 class-gf-madmimi.php:222
+#: class-gf-madmimi.php:154 class-gf-madmimi.php:158 class-gf-madmimi.php:271
 msgid "Mad Mimi List"
 msgstr ""
 
-#: class-gf-madmimi.php:118
+#: class-gf-madmimi.php:158
 msgid "Select which Mad Mimi list this feed will add contacts to."
 msgstr ""
 
-#: class-gf-madmimi.php:122 class-gf-madmimi.php:125
+#: class-gf-madmimi.php:162 class-gf-madmimi.php:165
 msgid "Map Fields"
 msgstr ""
 
-#: class-gf-madmimi.php:125
+#: class-gf-madmimi.php:165
 msgid "Select which Gravity Form fields pair with their respective Mad Mimi fields."
 msgstr ""
 
-#: class-gf-madmimi.php:129 class-gf-madmimi.php:131
+#: class-gf-madmimi.php:169 class-gf-madmimi.php:171
 msgid "Custom Fields"
 msgstr ""
 
-#: class-gf-madmimi.php:131
+#: class-gf-madmimi.php:171
 msgid ""
 "Select or create a new custom Mad Mimi field to pair with Gravity Forms "
 "fields. Any non-alphanumeric characters in custom field names will be "
@@ -87,75 +91,63 @@ msgid ""
 "the last one using the same name will be exported to Mad Mimi."
 msgstr ""
 
-#: class-gf-madmimi.php:135 class-gf-madmimi.php:139
+#: class-gf-madmimi.php:175 class-gf-madmimi.php:179
 msgid "Opt-In Condition"
 msgstr ""
 
-#: class-gf-madmimi.php:137
+#: class-gf-madmimi.php:177
 msgid "Enable"
 msgstr ""
 
-#: class-gf-madmimi.php:138
+#: class-gf-madmimi.php:178
 msgid "Export to Mad Mimi if"
 msgstr ""
 
-#: class-gf-madmimi.php:139
+#: class-gf-madmimi.php:179
 msgid ""
 "When the opt-in condition is enabled, form submissions will only be "
 "exported to Mad Mimi when the condition is met. When disabled, all form "
 "submissions will be exported."
 msgstr ""
 
-#: class-gf-madmimi.php:163
+#: class-gf-madmimi.php:208
 msgid "First Name"
 msgstr ""
 
-#: class-gf-madmimi.php:168
+#: class-gf-madmimi.php:213
 msgid "Last Name"
 msgstr ""
 
-#: class-gf-madmimi.php:173
+#: class-gf-madmimi.php:218
 msgid "Title"
 msgstr ""
 
-#: class-gf-madmimi.php:178
+#: class-gf-madmimi.php:223
 msgid "Company"
 msgstr ""
 
-#: class-gf-madmimi.php:183
+#: class-gf-madmimi.php:228
 msgid "Phone Number"
 msgstr ""
 
-#: class-gf-madmimi.php:188
+#: class-gf-madmimi.php:233
 msgid "Address"
 msgstr ""
 
-#: class-gf-madmimi.php:193
+#: class-gf-madmimi.php:238
 msgid "City"
 msgstr ""
 
-#: class-gf-madmimi.php:198
+#: class-gf-madmimi.php:243
 msgid "State"
 msgstr ""
 
-#: class-gf-madmimi.php:203
+#: class-gf-madmimi.php:248
 msgid "Zip Code"
 msgstr ""
 
-#: class-gf-madmimi.php:208
+#: class-gf-madmimi.php:253
 msgid "Country"
-msgstr ""
-
-#: class-gf-madmimi.php:233
-msgid "%s Feeds"
-msgstr ""
-
-#: class-gf-madmimi.php:255
-msgid "%s Settings"
-msgstr ""
-
-#: class-gf-madmimi.php:258
-msgid "To get started, please configure your %s."
 msgstr ""
 
 #. Plugin Name of the plugin/theme

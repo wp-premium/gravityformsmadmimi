@@ -5,36 +5,66 @@ GFForms::include_feed_addon_framework();
 class GFMadMimi extends GFFeedAddOn {
 
 	protected $_version = GF_MADMIMI_VERSION;
-	protected $_min_gravityforms_version = '1.9.6.10';
+	protected $_min_gravityforms_version = '1.9.14.26';
 	protected $_slug = 'gravityformsmadmimi';
 	protected $_path = 'gravityformsmadmimi/madmimi.php';
 	protected $_full_path = __FILE__;
 	protected $_url = 'http://www.gravityforms.com';
 	protected $_title = 'Gravity Forms Mad Mimi Add-On';
 	protected $_short_title = 'Mad Mimi';
-
-	// Members plugin integration
-	protected $_capabilities = array( 'gravityforms_madmimi', 'gravityforms_madmimi_uninstall' );
-
-	// Permissions
-	protected $_capabilities_settings_page = 'gravityforms_madmimi';
-	protected $_capabilities_form_settings = 'gravityforms_madmimi';
-	protected $_capabilities_uninstall = 'gravityforms_madmimi_uninstall';
 	protected $_enable_rg_autoupgrade = true;
-
 	protected $api = null;
 	private static $_instance = null;
 
+	/* Permissions */
+	protected $_capabilities_settings_page = 'gravityforms_madmimi';
+	protected $_capabilities_form_settings = 'gravityforms_madmimi';
+	protected $_capabilities_uninstall = 'gravityforms_madmimi_uninstall';
+
+	/* Members plugin integration */
+	protected $_capabilities = array( 'gravityforms_madmimi', 'gravityforms_madmimi_uninstall' );
+
+	/**
+	 * Get instance of this class.
+	 * 
+	 * @access public
+	 * @static
+	 * @return GFMadMimi
+	 */	
 	public static function get_instance() {
 		
-		if ( self::$_instance == null )
-			self::$_instance = new GFMadMimi();
+		if ( self::$_instance == null ) {
+			self::$_instance = new self;
+		}
 
 		return self::$_instance;
 		
 	}
 		
-	/* Settings Page */
+	/**
+	 * Register needed plugin hooks and PayPal delayed payment support.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function init() {
+		
+		parent::init();
+		
+		$this->add_delayed_payment_support(
+			array(
+				'option_label' => esc_html__( 'Subscribe contact to Mad Mimi only when payment is received.', 'gravityformsmadmimi' )
+			)
+		);
+		
+	}
+
+	/**
+	 * Prepare settings to be rendered on plugin settings tab.
+	 * 
+	 * @access public
+	 * @return array
+	 */
 	public function plugin_settings_fields() {
 						
 		return array(
@@ -68,7 +98,12 @@ class GFMadMimi extends GFFeedAddOn {
 		
 	}
 
-	/* Prepare plugin settings description */
+	/**
+	 * Prepare plugin settings description.
+	 * 
+	 * @access public
+	 * @return string $description
+	 */
 	public function plugin_settings_description() {
 		
 		$description  = '<p>';
@@ -94,7 +129,12 @@ class GFMadMimi extends GFFeedAddOn {
 		
 	}
 
-	/* Setup feed settings fields */
+	/**
+	 * Prepare settings to be rendered on feed settings tab.
+	 * 
+	 * @access public
+	 * @return array $fields - The feed settings fields
+	 */
 	public function feed_settings_fields() {	        
 
 		$settings = array(
@@ -147,7 +187,12 @@ class GFMadMimi extends GFFeedAddOn {
 	
 	}
 
-	/* Prepare fields for feed field mapping */
+	/**
+	 * Prepare fields for field mapping feed settings field.
+	 * 
+	 * @access public
+	 * @return array $field_map
+	 */
 	public function fields_for_feed_mapping() {
 		
 		/* Setup initial field map */
@@ -214,7 +259,11 @@ class GFMadMimi extends GFFeedAddOn {
 		
 	}
 
-	/* Setup feed list columns */
+	/**
+	 * Configures which columns should be displayed on the feed list page.
+	 *
+	 * @return array
+	 */
 	public function feed_list_columns() {
 		
 		return array(
@@ -224,63 +273,65 @@ class GFMadMimi extends GFFeedAddOn {
 		
 	}
 
-	/* Hide "Add New" feed button if API credentials are invalid */		
-	public function feed_list_title() {
+	/**
+	 * Set feed creation control.
+	 *
+	 * @access public
+	 * @return bool
+	 */
+	public function can_create_feed() {
+		return $this->initialize_api();
+	}
+
+	/**
+	 * Enable feed duplication.
+	 * 
+	 * @access public
+	 * @param int $feed_id
+	 * @return bool
+	 */
+	public function can_duplicate_feed( $feed_id ) {
 		
-		if ( $this->initialize_api() )
-			return parent::feed_list_title();
-			
-		return sprintf( __( '%s Feeds', 'gravityforms' ), $this->get_short_title() );
+		return true;
 		
 	}
 
-	/* Notify user to configure add-on before setting up feeds */
-	public function feed_list_message() {
-
-		$message = parent::feed_list_message();
-		
-		if ( $message !== false )
-			return $message;
-
-		if ( ! $this->initialize_api() )
-			return $this->configure_addon_message();
-
-		return false;
-		
-	}
-	
-	/* Feed list message for user to configure add-on */
-	public function configure_addon_message() {
-		
-		$settings_label = sprintf( __( '%s Settings', 'gravityformsmadmimi' ), $this->get_short_title() );
-		$settings_link  = sprintf( '<a href="%s">%s</a>', esc_url( $this->get_plugin_settings_url() ), $settings_label );
-
-		return sprintf( __( 'To get started, please configure your %s.', 'gravityformsmadmimi' ), $settings_link );
-		
-	}
-
-	/* Change value of list feed column to list name */
-	public function get_column_value_list( $item ) {
+	/**
+	 * Returns the value to be displayed in the list name column.
+	 * 
+	 * @access public
+	 * @param array $feed The feed being included in the feed list.
+	 * @return string
+	 */
+	public function get_column_value_list( $feed ) {
 			
 		/* If Mad Mimi instance is not initialized, return campaign ID. */
-		if ( ! $this->initialize_api() )
-			return $item['meta']['list'];
+		if ( ! $this->initialize_api() ) {
+			return $feed['meta']['list'];
+		}
 		
 		/* Get campaign and return name */
-		$list = $this->api->get_list( $item['meta']['list'] );
-		return ( is_null( $list ) ) ? $item['meta']['list'] : $list['name'];
+		$list = $this->api->get_list( $feed['meta']['list'] );
+		return ( is_null( $list ) ) ? $feed['meta']['list'] : $list['name'];
 		
 	}
 
-	/* Prepare lists for feed field */
+	/**
+	 * Prepare Mad Mimi lists for feed settings field.
+	 * 
+	 * @access public
+	 * @return array $choices - An array of Mad Mimi lists formatted for select settings field.
+	 */
 	public function lists_for_feed_setting() {
 			
 		/* If Mad Mimi API instance is not initialized, return an empty array. */
-		if ( ! $this->initialize_api() )
+		if ( ! $this->initialize_api() ) {
 			return array();
+		}
 		
 		/* Get the lists */
-		$lists = $this->api->lists();
+		$lists   = $this->api->lists();
+		$choices = array();
 		
 		/* Add lists to the choices array */
 		if ( ! empty( $lists ) ) {
@@ -299,14 +350,23 @@ class GFMadMimi extends GFFeedAddOn {
 		return $choices;
 	}
 
-	/* Process feed */
+	/**
+	 * Processes the feed, subscribes the user to the list.
+	 * 
+	 * @access public
+	 * @param array $feed The feed object to be processed.
+	 * @param array $entry The entry object currently being processed.
+	 * @param array $form The form object currently being processed.
+	 * @return array|null
+	 */
 	public function process_feed( $feed, $entry, $form ) {
 		
 		$this->log_debug( __METHOD__ . '(): Processing feed.' );
 		
 		/* If Mad Mimi instance is not initialized, exit. */
-		if ( ! $this->initialize_api() )
+		if ( ! $this->initialize_api() ) {
 			return $entry;
+		}
 		
 		/* Prepare audience member import array. */
 		$audience_member = array();
@@ -319,13 +379,14 @@ class GFMadMimi extends GFFeedAddOn {
 			
 			$field_value = $this->get_field_value( $form, $entry, $field_id );
 							
-			if ( ! rgblank( $field_value ) )
+			if ( ! rgblank( $field_value ) ) {
 				$audience_member[$field_name] = $field_value;
+			}
 			
 		}
 		
 		/* If email address is empty, return. */
-		if ( rgblank( $audience_member['email'] ) ) {
+		if ( GFCommon::is_invalid_or_empty_email( $audience_member['email'] ) ) {
 			
 			$this->log_error( __METHOD__ . '(): Email address not provided.' );
 			return;			
@@ -338,8 +399,9 @@ class GFMadMimi extends GFFeedAddOn {
 			foreach ( $feed['meta']['custom_fields'] as $custom_field ) {
 				
 				/* If field map field is not paired to a form field, skip. */
-				if ( rgblank( $custom_field['value'] ) )
+				if ( rgblank( $custom_field['value'] ) ) {
 					continue;
+				}
 					
 				$field_value = $this->get_field_value( $form, $entry, $custom_field['value'] );
 				
@@ -407,20 +469,31 @@ class GFMadMimi extends GFFeedAddOn {
 									
 	}
 	
-	/* Check if audience member is on a specific audience list. */
+	/**
+	 * Check if audience member is on a specific audience list.
+	 * 
+	 * @access public
+	 * @param string $email
+	 * @param string $list
+	 * @param array $search_results (default: null)
+	 * @return bool
+	 */
 	public function is_member_on_list( $email, $list, $search_results = null ) {
 		
 		/* If Mad Mimi instance is not initialized, exit. */
-		if ( ! $this->initialize_api() )
+		if ( ! $this->initialize_api() ) {
 			return false;
+		}
 		
 		/* If search results are not provided, do a search. */
-		if ( is_null( $search_results ) )
+		if ( is_null( $search_results ) ) {
 			$search_results = $this->api->search( $email );
+		}
 		
 		/* If search was not a success or result count is 0, return false. */
-		if ( ! $search_results['success'] || ( $search_results['success'] && $search_results['result']['count'] == 0 ) )
+		if ( ! $search_results['success'] || ( $search_results['success'] && $search_results['result']['count'] == 0 ) ) {
 			return false;
+		}
 		
 		/* Loop through results until member is found. */
 		foreach ( $search_results['result']['audience'] as $member ) {
@@ -449,25 +522,34 @@ class GFMadMimi extends GFFeedAddOn {
 		
 	}
 
-	/* Checks validity of Mad Mimi API credentials and initializes API if valid. */
+	/**
+	 * Initializes Mad Mimi API if credentials are valid.
+	 * 
+	 * @access public
+	 * @return bool|null
+	 */
 	public function initialize_api() {
 			
-		if ( ! is_null( $this->api ) )
+		if ( ! is_null( $this->api ) ) {
 			return true;
+		}
 
 		/* Load the API library. */
-		require_once( 'includes/class-madmimi.php' );
+		if ( ! class_exists( 'MadMimi_API' ) ) {
+			require_once( 'includes/class-madmimi-api.php' );
+		}
 
 		/* Get plugin settings */
 		$settings = $this->get_plugin_settings();
 		
 		/* If the API key or email address is not set, do not run a validation check. */
-		if ( rgblank( $settings['api_key'] ) || rgblank( $settings['email_address'] ) )
+		if ( rgblank( $settings['api_key'] ) || rgblank( $settings['email_address'] ) ) {
 			return null;
+		}
 
-		$this->log_debug( __METHOD__ . "(): Validating API info for {$settings['email_address']} / {$settings['api_key']}." );
+		$this->log_debug( __METHOD__ . "(): Validating API info for {$settings['email_address']}." );
 
-		$mad_mimi = new MadMimi( $settings['email_address'], $settings['api_key'] );
+		$mad_mimi = new MadMimi_API( $settings['email_address'], $settings['api_key'] );
 
 		/* Attempt to request a list of promotions and return API credential validation based on response. */
 		if ( $mad_mimi->promotions() === 'Unable to authenticate' ) {
@@ -489,7 +571,6 @@ class GFMadMimi extends GFFeedAddOn {
 			
 		}
 
-					
 	}
 	
 }
