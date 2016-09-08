@@ -1,6 +1,6 @@
 <?php
 	
-	class MadMimi {
+	class MadMimi_API {
 		
 		protected $api_url = 'https://api.madmimi.com';
 		
@@ -44,47 +44,34 @@
 			/* Build request URL. */
 			$request_url = $this->api_url . $path . ( ( $method == 'GET' ) ? $request_options : null );
 			
-			/* Initialize cURL session. */
-			$curl = curl_init();
-			
-			/* Setup cURL options. */
-			curl_setopt( $curl, CURLOPT_URL, $request_url );
-			curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Expect:', 'Accept: application/json' ) );
-			curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+			/* Prepare request. */
+			$args = array(
+				'headers' => array(
+					'Expect' => '',
+					'Accept' => 'application/json'
+				),
+				'method'  => $method
+			);
 			
 			/* If this is a POST request, pass the request options via cURL option. */
-			if ( $method == 'POST' ) {
-				
-				curl_setopt( $curl, CURLOPT_POST, true );
-				curl_setopt( $curl, CURLOPT_POSTFIELDS, $request_options );
-				
-			}
-
-			/* If this is a PUT request, pass the request options via cURL option. */
-			if ( $method == 'PUT' ) {
-				
-				curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, 'PUT' );
-				curl_setopt( $curl, CURLOPT_POSTFIELDS, $request_options );
-				
+			if ( $method == 'POST' || $method == 'PUT' ) {
+				$args['body'] = $request_options;				
 			}
 			
-			/* Execute cURL request. */
-			$curl_result = curl_exec( $curl );
+			$response = wp_remote_request( $request_url, $args );
 			
-			/* If there is an error, die with error message. */
-			if ( $curl_result === false ) {
+			/* If WP_Error, die. Otherwise, return decoded JSON. */
+			if ( is_wp_error( $response ) ) {
 				
-				die( 'cURL error: '. curl_error( $curl ) );
+				die( 'Request failed. '. $response->get_error_message() );
+				
+			} else {
+				
+				/* Attempt to decode JSON. If isn't JSON, return raw cURL result. */
+				$json_result = json_decode( $response['body'], true );		
+				return ( json_last_error() == JSON_ERROR_NONE ) ? $json_result : $response['body'];
 				
 			}
-			
-			/* Close cURL session. */
-			curl_close( $curl );
-			
-			/* Attempt to decode JSON. If isn't JSON, return raw cURL result. */
-			$json_result = json_decode( $curl_result, true );		
-			return ( json_last_error() == JSON_ERROR_NONE ) ? $json_result : $curl_result;
-			
 		}
 		
 		/**
@@ -357,7 +344,6 @@
 			return $this->make_request( '/audience_members/'. rawurlencode( $email_address ), $request_options, 'PUT' );
 			
 		}
-
 		
 	}
 	

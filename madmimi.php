@@ -4,15 +4,14 @@
 Plugin Name: Gravity Forms Mad Mimi Add-On
 Plugin URI: http://www.gravityforms.com
 Description: Integrates Gravity Forms with Mad Mimi allowing form submissions to be automatically sent to your Mad Mimi account.
-Version: 1.0
+Version: 1.1
 Author: rocketgenius
 Author URI: http://www.rocketgenius.com
 Text Domain: gravityformsmadmimi
 Domain Path: /languages
 
 ------------------------------------------------------------------------
-Copyright 2009 rocketgenius
-last updated: October 20, 2010
+Copyright 2009-2016 Rocketgenius, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,7 +28,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-define('GF_MADMIMI_VERSION', '1.0');
+define('GF_MADMIMI_VERSION', '1.1');
 
 add_action('gform_loaded', array('GF_MadMimi_Bootstrap', 'load'), 5);
 
@@ -40,4 +39,8 @@ class GF_MadMimi_Bootstrap {
 		GFAddOn::register('GFMadMimi');
 	}
 
+}
+
+function gf_madmimi() {
+	return GFMadMimi::get_instance();	
 }
