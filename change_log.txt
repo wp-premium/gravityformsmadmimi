@@ -1,17 +1,25 @@
------------------------------------------------------------
-1.1
-	- Added feed duplication support.
-    - Added gf_madmimi() for easily getting a Mad Mimi instance.
-    - Added support for delaying feed processing until payment by PayPal Standard is successfully completed.
-	- Added Spanish (es_ES) translation.
-    - Updated feed processing to abort if email is empty or invalid.
-	- Updated API calls to use native WordPress functions.
-    - Fixed a PHP notice on the feeds page for the list name column.
-    - Fixed an issue which could cause an incorrect result to be displayed when validating the API settings.
-    - Fixed a PHP warning for the List setting if no lists were returned by the API.
-    - Fixed an issue with the request failed message if a WP_Error occurs.
-	- Fixed a fatal error when the MadMimi class has already been included by another plugin.
+# 1.2 | 2018-04-09
+   - Added security enhancements.
+   - Added GPL to plugin header.
+   - Update API library to be a public property.
+   - Updated Plugin URI and Author URI to use https.
+   - Updated strings for translations.
+   - Fixed strings for translations.
 
------------------------------------------------------------
-1.0
+
+# 1.1 | 2016-08-31
+   - Added feed duplication support.
+   - Added gf_madmimi() for easily getting a Mad Mimi instance.
+   - Added support for delaying feed processing until payment by PayPal Standard is successfully completed.
+   - Added Spanish (es_ES) translation.
+   - Updated feed processing to abort if email is empty or invalid.
+   - Updated API calls to use native WordPress functions.
+   - Fixed a PHP notice on the feeds page for the list name column.
+   - Fixed an issue which could cause an incorrect result to be displayed when validating the API settings.
+   - Fixed a PHP warning for the List setting if no lists were returned by the API.
+   - Fixed an issue with the request failed message if a WP_Error occurs.
+   - Fixed a fatal error when the MadMimi class has already been included by another plugin.
+
+
+# 1.0 | 2015-05-14
 	- It's all new!

@@ -1,5 +1,10 @@
 <?php
 
+// don't load directly
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 GFForms::include_feed_addon_framework();
 
 class GFMadMimi extends GFFeedAddOn {
@@ -13,7 +18,7 @@ class GFMadMimi extends GFFeedAddOn {
 	protected $_title = 'Gravity Forms Mad Mimi Add-On';
 	protected $_short_title = 'Mad Mimi';
 	protected $_enable_rg_autoupgrade = true;
-	protected $api = null;
+	public $api = null;
 	private static $_instance = null;
 
 	/* Permissions */
@@ -108,7 +113,7 @@ class GFMadMimi extends GFFeedAddOn {
 		
 		$description  = '<p>';
 		$description .= sprintf(
-			__( 'Mad Mimi makes it easy to send email newsletters to your customers, manage your subscriber lists, and track campaign performance. Use Gravity Forms to collect customer information and automatically add them to your Mad Mimi audience list. If you don\'t have a Mad Mimi account, you can %1$s sign up for one here.%2$s', 'gravityformsmadmimi' ),
+			__( 'Mad Mimi makes it easy to send email newsletters to your customers, manage your subscriber lists, and track campaign performance. Use Gravity Forms to collect customer information and automatically add it to your Mad Mimi audience list. If you don\'t have a Mad Mimi account, you can %1$ssign up for one here.%2$s', 'gravityformsmadmimi' ),
 			'<a href="http://www.madmimi.com/" target="_blank">', '</a>'
 		);
 		$description .= '</p>';
@@ -172,11 +177,11 @@ class GFMadMimi extends GFFeedAddOn {
 					),
 					array(
 						'name'           => 'feedCondition',
-						'label'          => __( 'Opt-In Condition', 'gravityformsmadmimi' ),
+						'label'          => __( 'Conditional Logic', 'gravityformsmadmimi' ),
 						'type'           => 'feed_condition',
 						'checkbox_label' => __( 'Enable', 'gravityformsmadmimi' ),
 						'instructions'   => __( 'Export to Mad Mimi if', 'gravityformsmadmimi' ),
-						'tooltip'        => '<h6>'. __( 'Opt-In Condition', 'gravityformsmadmimi' ) .'</h6>' . __( 'When the opt-in condition is enabled, form submissions will only be exported to Mad Mimi when the condition is met. When disabled, all form submissions will be exported.', 'gravityformsmadmimi' )
+						'tooltip'        => '<h6>'. __( 'Conditional Logic', 'gravityformsmadmimi' ) .'</h6>' . __( 'When conditional logic is enabled, form submissions will only be exported to Mad Mimi when the condition is met. When disabled, all form submissions will be exported.', 'gravityformsmadmimi' )
 
 					)
 				)
