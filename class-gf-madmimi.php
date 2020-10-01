@@ -65,6 +65,19 @@ class GFMadMimi extends GFFeedAddOn {
 	}
 
 	/**
+	 * Return the plugin's icon for the plugin/form settings menu.
+	 *
+	 * @since 1.3
+	 *
+	 * @return string
+	 */
+	public function get_menu_icon() {
+
+		return file_get_contents( $this->get_base_path() . '/images/menu-icon.svg' );
+
+	}
+
+	/**
 	 * Prepare settings to be rendered on plugin settings tab.
 	 * 
 	 * @access public
@@ -152,7 +165,8 @@ class GFMadMimi extends GFFeedAddOn {
 						'type'           => 'text',
 						'class'          => 'medium',
 						'required'       => true,
-						'tooltip'        => '<h6>'. __( 'Name', 'gravityformsmadmimi' ) .'</h6>' . __( 'Enter a feed name to uniquely identify this setup.', 'gravityformsmadmimi' )
+						'tooltip'        => '<h6>'. __( 'Name', 'gravityformsmadmimi' ) .'</h6>' . __( 'Enter a feed name to uniquely identify this setup.', 'gravityformsmadmimi' ),
+						'default_value'  => $this->get_default_feed_name(),
 					),
 					array(
 						'name'           => 'list',
@@ -548,7 +562,7 @@ class GFMadMimi extends GFFeedAddOn {
 		$settings = $this->get_plugin_settings();
 		
 		/* If the API key or email address is not set, do not run a validation check. */
-		if ( rgblank( $settings['api_key'] ) || rgblank( $settings['email_address'] ) ) {
+		if ( empty( $settings['api_key'] ) || empty( $settings['email_address'] ) ) {
 			return null;
 		}
 
