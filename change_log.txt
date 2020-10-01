@@ -1,25 +1,35 @@
-# 1.2 | 2018-04-09
-   - Added security enhancements.
-   - Added GPL to plugin header.
-   - Update API library to be a public property.
-   - Updated Plugin URI and Author URI to use https.
-   - Updated strings for translations.
-   - Fixed strings for translations.
+### 1.4 | 2020-09-08
+- Added support for Gravity Forms 2.5.
+- Updated the feed name setting for new feeds to include a default value.
 
 
-# 1.1 | 2016-08-31
-   - Added feed duplication support.
-   - Added gf_madmimi() for easily getting a Mad Mimi instance.
-   - Added support for delaying feed processing until payment by PayPal Standard is successfully completed.
-   - Added Spanish (es_ES) translation.
-   - Updated feed processing to abort if email is empty or invalid.
-   - Updated API calls to use native WordPress functions.
-   - Fixed a PHP notice on the feeds page for the list name column.
-   - Fixed an issue which could cause an incorrect result to be displayed when validating the API settings.
-   - Fixed a PHP warning for the List setting if no lists were returned by the API.
-   - Fixed an issue with the request failed message if a WP_Error occurs.
-   - Fixed a fatal error when the MadMimi class has already been included by another plugin.
+### 1.3 | 2020-03-24
+- Added translations for Hebrew, Hindi, Japanese, and Turkish.
+- Fixed PHP 7.4 notices which occur when the API is initializing and the settings are empty.
 
 
-# 1.0 | 2015-05-14
-	- It's all new!
+### 1.2 | 2018-04-09
+- Added security enhancements.
+- Added GPL to plugin header.
+- Update API library to be a public property.
+- Updated Plugin URI and Author URI to use https.
+- Updated strings for translations.
+- Fixed strings for translations.
+
+
+### 1.1 | 2016-08-31
+- Added feed duplication support.
+- Added gf_madmimi() for easily getting a Mad Mimi instance.
+- Added support for delaying feed processing until payment by PayPal Standard is successfully completed.
+- Added Spanish (es_ES) translation.
+- Updated feed processing to abort if email is empty or invalid.
+- Updated API calls to use native WordPress functions.
+- Fixed a PHP notice on the feeds page for the list name column.
+- Fixed an issue which could cause an incorrect result to be displayed when validating the API settings.
+- Fixed a PHP warning for the List setting if no lists were returned by the API.
+- Fixed an issue with the request failed message if a WP_Error occurs.
+- Fixed a fatal error when the MadMimi class has already been included by another plugin.
+
+
+### 1.0 | 2015-05-14
+- It's all new!
